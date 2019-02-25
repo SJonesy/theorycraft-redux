@@ -86,20 +86,20 @@ public class Character {
 
     private void applyJob(String jobName) {
         this.job = Job.GetJob(jobName);
-        this.might        += this.job.mightModifier;
-        this.intellect    += this.job.intellectModifier;
-        this.constitution += this.job.constitutionModifier;
-        this.dexterity    += this.job.dexterityModifier;
-        this.perception   += this.job.perceptionModifier;
-        this.resolve      += this.job.resolveModifier;
-        this.iceResist    *= this.job.iceResistModifier;
-        this.fireResist   *= this.job.fireResistModifier;
-        this.poisonResist *= this.job.poisonResistModifier;
-        this.holyResist   *= this.job.holyResistModifier;
-        this.unholyResist *= this.job.unholyResistModifier;
-        this.waterResist  *= this.job.waterResistModifier;
-        this.airResist    *= this.job.airResistModifier;
-        this.earthResist  *= this.job.earthResistModifier;
+        this.might        += this.job.getMightModifier();
+        this.intellect    += this.job.getIntellectModifier();
+        this.constitution += this.job.getConstitutionModifier();
+        this.dexterity    += this.job.getDexterityModifier();
+        this.perception   += this.job.getPerceptionModifier();
+        this.resolve      += this.job.getResolveModifier();
+        this.iceResist    *= this.job.getIceResistModifier();
+        this.fireResist   *= this.job.getFireResistModifier();
+        this.poisonResist *= this.job.getPoisonResistModifier();
+        this.holyResist   *= this.job.getHolyResistModifier();
+        this.unholyResist *= this.job.getUnholyResistModifier();
+        this.waterResist  *= this.job.getWaterResistModifier();
+        this.airResist    *= this.job.getAirResistModifier();
+        this.earthResist  *= this.job.getEarthResistModifier();
     }
 
     private void applyAbilities() {
