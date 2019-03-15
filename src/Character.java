@@ -45,6 +45,7 @@ public class Character {
     public boolean isAlive        = true;
     public boolean isPoisoned     = false;
     public boolean isRegenerating = false;
+    public boolean isRaging       = false;
     public int regenValue         = 0;
     public int poisonValue        = 0;
     public int recoveryTurnsRemaining = 0;
@@ -57,8 +58,9 @@ public class Character {
         String jobName = characterData[2].toUpperCase();
         for (int i=3; i <= 5; i++) {
             Ability ability = Ability.GetAbility(characterData[i].toUpperCase());
-            this.abilities.add(ability);
-            this.applyAbility(ability);
+            if (!ability.isClassOnly()) {
+                this.addAbility(ability);
+            }
         }
 
         applyRace(raceName);
@@ -92,7 +94,7 @@ public class Character {
         this.earthResist  *= this.race.getEarthResistModifier();
 
         for (Ability ability : this.race.getAbilities())
-            this.abilities.add(ability);
+            this.addAbility(ability);
     }
 
     private void applyJob(String jobName) {
@@ -113,7 +115,7 @@ public class Character {
         this.earthResist  *= this.job.getEarthResistModifier();
 
         for (Ability ability : this.job.getAbilities())
-            this.abilities.add(ability);
+            this.addAbility(ability);
     }
 
     private void applyAbility(Ability ability) {
@@ -133,8 +135,11 @@ public class Character {
         this.earthResist  *= ability.getEarthResistModifier();
     }
 
-    private void applyAbility() {
-
+    private void addAbility(Ability ability) {
+        if (!this.abilities.contains(ability)) {
+            this.abilities.add(ability);
+            this.applyAbility(ability);
+        }
     }
 }
 

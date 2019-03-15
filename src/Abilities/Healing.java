@@ -4,8 +4,8 @@ public class Healing extends Ability {
     public Healing () {
         this.setName("Healing");
         this.setAbilityType(AbilityType.SINGLE_TARGET_HEAL);
-        this.setRecovery(2);
-        this.setDelay(5);
+        this.setRecovery(6);
+        this.setDelay(1);
         this.setMinPower(24);
         this.setMaxPower(44);
         this.setManaCost(20);

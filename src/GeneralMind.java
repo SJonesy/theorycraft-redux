@@ -27,6 +27,23 @@ public class GeneralMind extends Mind {
             if (actor.mana < ability.getManaCost())
                 continue;
 
+            if (ability.getAbilityType() == AbilityType.SELF_BUFF) {
+                Party allyParty = getFriendlyParty(parties, actor);
+
+                switch (ability.getName()) {
+                    case "Rage":
+                        if (!actor.isRaging) {
+                            return new CombatAction(ability, actor);
+                        }
+                        break;
+                }
+            }
+        }
+
+        for (Ability ability : actor.abilities) {
+            if (actor.mana < ability.getManaCost())
+                continue;
+
             if (ability.getAbilityType() == AbilityType.DAMAGE_OVER_TIME) {
                 Party enemyParty = getEnemyParty(parties, actor);
 

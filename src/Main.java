@@ -1,5 +1,7 @@
 import Abilities.Ability;
+import Abilities.AbilityType;
 import Abilities.Ansi;
+import Abilities.DamageType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +78,7 @@ public class Main {
                         System.out.println(String.format("%s%s takes %s damage from poison.%s", Ansi.LIGHT_GREEN, character.name, poisonDamage, Ansi.RESET));
                         character.hitPoints -= poisonDamage;
                         character.poisonValue -= 1;
-                        if (character.poisonValue == 0) {
+                        if (character.poisonValue <= 0) {
                             character.isPoisoned = false;
                             System.out.println(String.format("%s%s is no longer poisoned.%s", Ansi.DARK_GRAY, character.name, Ansi.RESET));
                         }
@@ -95,26 +97,29 @@ public class Main {
                 CombatAction action = queuedActions[tick].remove(0);
                 if (!action.actor.isAlive)
                     continue;
-                action.actor.recoveryTurnsRemaining += GetRecoveryTime(action);
-                action.actor.isUsingAbility = false;
-                if (action.targetCharacter != null && !action.targetCharacter.isAlive) {
+                int power = ThreadLocalRandom.current().nextInt(action.ability.getMinPower(), action.ability.getMaxPower());
+
+                // Action Fizzle Checks
+                if ((action.targetCharacter != null && !action.targetCharacter.isAlive)
+                        || (action.ability.getName() == "Poison" && action.targetCharacter.isPoisoned)
+                        || (action.ability.getAbilityType() == AbilityType.SINGLE_TARGET_HEAL && action.targetCharacter.hitPoints >= action.targetCharacter.maxHitPoints)){
                     action.actor.recoveryTurnsRemaining = 0;
                     action.actor.isUsingAbility = false;
                     continue;
                 }
+
+                action.actor.recoveryTurnsRemaining = GetRecoveryTime(action);
+                action.actor.isUsingAbility = false;
                 action.actor.mana -= action.ability.getManaCost();
-                int power = ThreadLocalRandom.current().nextInt(action.ability.getMinPower(), action.ability.getMaxPower());
                 switch (action.ability.getAbilityType()) {
+                    case SELF_BUFF:
+                        DoSelfBuff(action, power);
+                        break;
                     case SINGLE_TARGET_DAMAGE:
                     case MELEE:
                         DoDamage(action, power);
                         break;
                     case SINGLE_TARGET_HEAL:
-                        if (action.targetCharacter.hitPoints >= action.targetCharacter.maxHitPoints) {
-                            action.actor.recoveryTurnsRemaining = 0;
-                            action.actor.isUsingAbility = false;
-                            continue;
-                        }
                         DoHealing(action, power);
                         break;
                     case GROUP_BUFF:
@@ -141,7 +146,9 @@ public class Main {
 
                     CombatAction action = character.mind.decideAction(character, parties);
                     if (action != null) {
-                        int nextAction = tick + action.ability.getDelay() * 10 / action.actor.dexterity;
+                        int nextAction = tick + (action.ability.getDelay() * Math.round(10f / action.actor.dexterity));
+                        if (nextAction == tick)
+                            nextAction += 1;
                         queuedActions[nextAction].add(action);
                         action.actor.isUsingAbility = true;
                         CombatOutput(action.ability.getPrepareActionText(), action);
@@ -172,17 +179,30 @@ public class Main {
     }
 
     private static void DoDamage(CombatAction action, int damage) {
+        if (action.ability.getDamageType() == DamageType.RANGED_HIT) {
+            int random = ThreadLocalRandom.current().nextInt(1, 10);
+            if (random * action.actor.perception / 10 < 5) {
+                CombatOutput("%actor misses %target with %ability.", action);
+                return;
+            }
+        }
+
+        if (action.actor.isRaging || action.targetCharacter.isRaging)
+            damage += ThreadLocalRandom.current().nextInt(4, 8);
+
         damage = damage * action.actor.might / 10;
         damage = damage * 10 / action.targetCharacter.resolve;
 
         for (Ability ability : action.targetCharacter.abilities) {
             if (ability.getName() == "Shield") {
-                switch (ability.getAbilityType()) {
+                switch (action.ability.getAbilityType()) {
                     case MELEE:
-                        damage *= .5;
+                        if (action.ability.getName() != "Hammer")
+                            damage *= .5;
                         break;
                     case SINGLE_TARGET_DAMAGE:
                         damage *= .9;
+                        break;
                 }
             }
         }
@@ -190,7 +210,7 @@ public class Main {
         CombatOutput(action.ability.getDoActionText(), action, damage);
         if (action.targetCharacter.hitPoints <= 0) {
             action.targetCharacter.isAlive = false;
-            System.out.println(Ansi.RED + action.targetCharacter.name + " has died." + Ansi.RESET);
+            CombatOutput(Ansi.RED + "%target has died.", action);
         }
     }
 
@@ -209,6 +229,7 @@ public class Main {
 
     private static void CombatOutput(String text, CombatAction action) {
         text = text.replaceAll("%actor", action.actor.name);
+        text = text.replaceAll("%ability", action.ability.getName());
         if (action.targetCharacter != null)
             text = text.replaceAll("%target", action.targetCharacter.name);
         System.out.println(text + Ansi.RESET);
@@ -224,6 +245,8 @@ public class Main {
                 System.out.println(Ansi.BLUE + action.actor.name + " finishes casting group regeneration." + Ansi.RESET);
                 power = power * action.actor.might / 10;
                 for (Character character : action.targetParty.characters) {
+                    if (!character.isAlive)
+                        continue;
                     character.isRegenerating = true;
                     if (character.regenValue < power) {
                         System.out.println(Ansi.BLUE + character.name + " begins to regenerate." + Ansi.RESET);
@@ -232,7 +255,6 @@ public class Main {
                 }
                 break;
         }
-
     }
 
     private static void DoDamageOverTime(CombatAction action, int power) {
@@ -243,6 +265,15 @@ public class Main {
                 power = power * action.actor.might / 10;
                 action.targetCharacter.isPoisoned = true;
                 action.targetCharacter.poisonValue = power;
+                break;
+        }
+    }
+
+    private static void DoSelfBuff(CombatAction action, int power) {
+        CombatOutput(action.ability.getDoActionText(), action, power);
+        switch (action.ability.getName()) {
+            case "Rage":
+                action.actor.isRaging = true;
                 break;
         }
     }

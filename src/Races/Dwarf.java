@@ -10,9 +10,9 @@ public class Dwarf extends Race {
         this.setDexterityModifier(-1);
         this.setPerceptionModifier(0);
         this.setResolveModifier(2);
-        this.setIceResistModifier(1.4f);
-        this.setFireResistModifier(1.4f);
-        this.setPoisonResistModifier(1.4f);
-        this.setEarthResistModifier(1.4f);
+        this.setIceResistModifier(1.6f);
+        this.setFireResistModifier(1.6f);
+        this.setPoisonResistModifier(1.6f);
+        this.setEarthResistModifier(1.6f);
     }
 }

@@ -1,6 +1,7 @@
-Tank,Dwarf,Warrior,Sword,Shield,Stout
-Tank,Dwarf,Warrior,Sword,Shield,Stout
-Melee DPS,Elf,Warrior,Dagger,Mighty,Mighty
-Grindy DPS,Elf,Warrior,Dagger,Poison,Mighty
-Big Healer,Elf,Priest,Mighty,Mighty,Mighty
-Regen Healer,Elf,Wizard,GroupRegeneration,LesserHealing,Mighty
+Test Party
+Tank,Ogre,Warrior,Hammer,Shield,Stout
+Barbarian,Ogre,Barbarian,Hammer,Stout,Mighty
+Barbarian,Ogre,Barbarian,Hammer,Stout,Mighty
+Barbarian,Ogre,Barbarian,Hammer,Stout,Mighty
+Barbarian,Ogre,Barbarian,Hammer,Stout,Mighty
+Regen Healer,Elf,Priest,LesserHealing,Mighty,Stout

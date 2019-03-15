@@ -3,6 +3,7 @@ package Abilities;
 public abstract class Ability {
     private String name;
     private AbilityType abilityType;
+    private DamageType damageType;
     private int recovery;
     private int delay;
     private int maxPower;
@@ -24,6 +25,7 @@ public abstract class Ability {
     private float earthResistModifier  = 1.0f;
     private String prepareActionText;
     private String doActionText;
+    private boolean classOnly;
 
     public static Ability GetAbility(String abilityName) {
         switch (abilityName.toUpperCase()) {
@@ -47,6 +49,10 @@ public abstract class Ability {
                 return new GroupRegeneration();
             case "POISON":
                 return new Poison();
+            case "HAMMER":
+                return new Hammer();
+            case "RAGE":
+                return new Rage();
             default:
                 return null;
         }
@@ -234,6 +240,22 @@ public abstract class Ability {
 
     public void setEarthResistModifier(float earthResistModifier) {
         this.earthResistModifier = earthResistModifier;
+    }
+
+    public boolean isClassOnly() {
+        return classOnly;
+    }
+
+    public void setClassOnly(boolean classOnly) {
+        this.classOnly = classOnly;
+    }
+
+    public DamageType getDamageType() {
+        return damageType;
+    }
+
+    public void setDamageType(DamageType damageType) {
+        this.damageType = damageType;
     }
 }
 

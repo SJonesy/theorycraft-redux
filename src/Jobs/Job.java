@@ -33,6 +33,10 @@ public abstract class Job {
                 return new Priest();
             case "WIZARD":
                 return new Wizard();
+            case "COMMONER":
+                return new Commoner();
+            case "BARBARIAN":
+                return new Barbarian();
             default:
                 return null;
         }

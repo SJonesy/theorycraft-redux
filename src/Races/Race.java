@@ -33,6 +33,8 @@ public abstract class Race {
                 return new Elf();
             case "DWARF":
                 return new Dwarf();
+            case "OGRE":
+                return new Ogre();
             default:
                 return null;
         }

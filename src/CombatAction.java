@@ -20,5 +20,10 @@ public class CombatAction {
         this.actor = actor;
         this.targetParty = targetParty;
     }
+
+    public CombatAction(Ability ability, Character actor) {
+        this.ability = ability;
+        this.actor = actor;
+    }
 }
 

@@ -1,7 +1,7 @@
 package Jobs;
 
 import Abilities.Ability;
-import Abilities.Healing;
+import Abilities.GroupRegeneration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,11 @@ public class Priest extends Job {
         this.setIntellectModifier(2);
         this.setMightModifier(2);
         this.setConstitutionModifier(-2);
-        this.setResolveModifier(-2);
-        this.setDexterityModifier(-2);
+        this.setResolveModifier(-1);
+        this.setDexterityModifier(-1);
 
         List<Ability> abilities = new ArrayList<>();
-        abilities.add(new Healing());
+        abilities.add(new GroupRegeneration());
 
         this.setAbilities(abilities);
     }

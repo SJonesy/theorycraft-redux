@@ -4,8 +4,8 @@ public class LesserHealing extends Ability {
     public LesserHealing () {
         this.setName("LesserHealing");
         this.setAbilityType(AbilityType.SINGLE_TARGET_HEAL);
-        this.setRecovery(2);
-        this.setDelay(4);
+        this.setRecovery(4);
+        this.setDelay(1);
         this.setMinPower(12);
         this.setMaxPower(22);
         this.setManaCost(10);
