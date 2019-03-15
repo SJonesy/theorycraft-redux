@@ -2,7 +2,11 @@ package Abilities;
 
 public enum AbilityType {
     SINGLE_TARGET_DAMAGE,
+    SINGLE_TARGET_SPELL_DAMAGE,
     SINGLE_TARGET_BUFF,
+    SINGLE_TARGET_HEAL,
     MELEE,
+    GROUP_BUFF,
+    DAMAGE_OVER_TIME,
     PASSIVE
 }

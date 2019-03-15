@@ -29,6 +29,10 @@ public abstract class Job {
         switch (raceName.toUpperCase()) {
             case "WARRIOR":
                 return new Warrior();
+            case "PRIEST":
+                return new Priest();
+            case "WIZARD":
+                return new Wizard();
             default:
                 return null;
         }
@@ -161,5 +165,9 @@ public abstract class Job {
 
     public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
+    }
+
+    public void addAbility(Ability ability) {
+        this.abilities.add(ability);
     }
 }

@@ -14,5 +14,11 @@ public class CombatAction {
         this.actor = actor;
         this.targetCharacter = targetCharacter;
     }
+
+    public CombatAction(Ability ability, Character actor, Party targetParty) {
+        this.ability = ability;
+        this.actor = actor;
+        this.targetParty = targetParty;
+    }
 }
 

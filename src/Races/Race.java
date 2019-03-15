@@ -31,6 +31,8 @@ public abstract class Race {
                 return new Human();
             case "ELF":
                 return new Elf();
+            case "DWARF":
+                return new Dwarf();
             default:
                 return null;
         }

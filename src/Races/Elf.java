@@ -5,9 +5,9 @@ public class Elf extends Race {
         this.setName("Elf");
         this.setMightModifier(0);
         this.setIntellectModifier(1);
-        this.setConstitutionModifier(0);
-        this.setDexterityModifier(3);
-        this.setPerceptionModifier(3);
+        this.setConstitutionModifier(-1);
+        this.setDexterityModifier(2);
+        this.setPerceptionModifier(2);
         this.setResolveModifier(0);
     }
 }

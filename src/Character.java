@@ -2,6 +2,7 @@ import Abilities.Ability;
 import Jobs.Job;
 import Races.Race;
 
+import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,9 @@ public class Character {
     public boolean isUsingAbility = false;
     public boolean isAlive        = true;
     public boolean isPoisoned     = false;
+    public boolean isRegenerating = false;
+    public int regenValue         = 0;
+    public int poisonValue        = 0;
     public int recoveryTurnsRemaining = 0;
 
     public Character (String data) {
@@ -54,13 +58,17 @@ public class Character {
         for (int i=3; i <= 5; i++) {
             Ability ability = Ability.GetAbility(characterData[i].toUpperCase());
             this.abilities.add(ability);
+            this.applyAbility(ability);
         }
 
         applyRace(raceName);
         applyJob(jobName);
         this.mind = Mind.GetMind("GENERAL");
 
-        this.maxHitPoints = this.constitution * 20;
+        // hitpointsFormula = (float) this.constitution / modifier * constant;
+        // Decreasing the modifier makes everyone beefier, increasing it makes them weaker
+        float hitpointsFormula = (float) this.constitution / 60f * 1000f;
+        this.maxHitPoints = Math.round(hitpointsFormula);
         this.hitPoints = maxHitPoints;
         this.maxMana = this.intellect * 10;
         this.mana = maxMana;
@@ -82,6 +90,9 @@ public class Character {
         this.waterResist  *= this.race.getWaterResistModifier();
         this.airResist    *= this.race.getAirResistModifier();
         this.earthResist  *= this.race.getEarthResistModifier();
+
+        for (Ability ability : this.race.getAbilities())
+            this.abilities.add(ability);
     }
 
     private void applyJob(String jobName) {
@@ -100,9 +111,29 @@ public class Character {
         this.waterResist  *= this.job.getWaterResistModifier();
         this.airResist    *= this.job.getAirResistModifier();
         this.earthResist  *= this.job.getEarthResistModifier();
+
+        for (Ability ability : this.job.getAbilities())
+            this.abilities.add(ability);
     }
 
-    private void applyAbilities() {
+    private void applyAbility(Ability ability) {
+        this.might        += ability.getMightModifier();
+        this.intellect    += ability.getIntellectModifier();
+        this.constitution += ability.getConstitutionModifier();
+        this.dexterity    += ability.getDexterityModifier();
+        this.perception   += ability.getPerceptionModifier();
+        this.resolve      += ability.getResolveModifier();
+        this.iceResist    *= ability.getIceResistModifier();
+        this.fireResist   *= ability.getFireResistModifier();
+        this.poisonResist *= ability.getPoisonResistModifier();
+        this.holyResist   *= ability.getHolyResistModifier();
+        this.unholyResist *= ability.getUnholyResistModifier();
+        this.waterResist  *= ability.getWaterResistModifier();
+        this.airResist    *= ability.getAirResistModifier();
+        this.earthResist  *= ability.getEarthResistModifier();
+    }
+
+    private void applyAbility() {
 
     }
 }
