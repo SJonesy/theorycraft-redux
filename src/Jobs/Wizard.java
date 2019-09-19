@@ -10,7 +10,7 @@ public class Wizard extends Job {
     public Wizard () {
         this.setName("Wizard");
 
-        this.setIntellectModifier(4);
+        this.setIntellectModifier(6);
         this.setMightModifier(4);
         this.setConstitutionModifier(-3);
         this.setResolveModifier(-2);

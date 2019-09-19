@@ -97,7 +97,7 @@ public class GeneralMind extends Mind {
         return null;
     }
 
-    private Character getLowestHealthCharacter(Party party) {
+    public Character getLowestHealthCharacter(Party party) {
         int lowestHitpoints = 99999;
         Character lowestHealthCharacter = null;
         for (Character character : party.characters) {
@@ -110,7 +110,7 @@ public class GeneralMind extends Mind {
         return lowestHealthCharacter;
     }
 
-    private Character getSingleTargetHealTarget(Party party) {
+    public Character getSingleTargetHealTarget(Party party) {
         int lowestHitpoints = 99999;
         Character lowestHealthCharacter = null;
         for (Character character : party.characters) {
@@ -123,7 +123,7 @@ public class GeneralMind extends Mind {
         return lowestHealthCharacter;
     }
 
-    private Party getEnemyParty(List<Party> parties, Character actor) {
+    public Party getEnemyParty(List<Party> parties, Character actor) {
         for (Party party : parties) {
             if (!party.characters.contains(actor))
                 return party;
@@ -132,7 +132,7 @@ public class GeneralMind extends Mind {
         return null;
     }
 
-    private Party getFriendlyParty(List<Party> parties, Character actor) {
+    public Party getFriendlyParty(List<Party> parties, Character actor) {
         for (Party party : parties) {
             if (party.characters.contains(actor))
                 return party;

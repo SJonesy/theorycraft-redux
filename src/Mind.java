@@ -7,6 +7,8 @@ public abstract class Mind {
         switch (mindName.toUpperCase()) {
             case "GENERAL":
                 return new GeneralMind();
+            case "ASSASSIN":
+                return new AssassinMind();
             default:
                 return null;
         }

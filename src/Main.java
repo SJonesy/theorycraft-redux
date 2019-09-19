@@ -65,7 +65,7 @@ public class Main {
                     if (character.isRegenerating && tick % 2 == 0) {
                         character.hitPoints = Math.min(character.hitPoints + character.regenValue, character.maxHitPoints);
                         System.out.println(String.format("%s%s regenerates %s health.%s", Ansi.LIGHT_BLUE, character.name, character.regenValue, Ansi.RESET));
-                        character.regenValue -= 2;
+                        character.regenValue -= 4;
                         if (character.regenValue <= 0) {
                             character.isRegenerating = false;
                             System.out.println(String.format("%s%s is no longer regenerating.%s", Ansi.DARK_GRAY, character.name, Ansi.RESET));

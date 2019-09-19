@@ -62,10 +62,13 @@ public class Character {
                 this.addAbility(ability);
             }
         }
+        if (characterData.length < 7)
+            this.mind = Mind.GetMind("GENERAL");
+        else
+            this.mind = Mind.GetMind(characterData[6]);
 
         applyRace(raceName);
         applyJob(jobName);
-        this.mind = Mind.GetMind("GENERAL");
 
         // hitpointsFormula = (float) this.constitution / modifier * constant;
         // Decreasing the modifier makes everyone beefier, increasing it makes them weaker
